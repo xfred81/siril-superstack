@@ -90,14 +90,14 @@ class QuickSelector:
         if first_e is not None:
             result.append(f'select {seq_fname} {first_e} {last_e}\n')
         
-        result.append(f"stack {seq_fname} sum -filter-included -out=img3/seqselector.fit\n")
-        result.append("load img3/seqselector.fit\n")
+        result.append(f"stack {seq_fname} sum -filter-included -out=img/seqselector.fit\n")
+        result.append("load img/seqselector.fit\n")
         result.append("wavelet 6 2\n")
         result.append("wrecons 12.83 14.22 1 1 1 1\n") # 43.5 8.09 1.67 1 1 1\n")
         result.append("rmgreen\n")
         result.append("asinh -human 4 0.02997\n")
         result.append("satu 0.75 0.25\n")
-        result.append(f"savetif img3/seqselector{oidx}\n")
+        result.append(f"savetif img/seqselector{oidx}\n")
 
         
         # result.append("close\n")

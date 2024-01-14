@@ -26,11 +26,16 @@ def planetary(S: QuickSelector, seq_fname: str, from_idx: int, step: int, window
         out_file.writelines(lines)
 
 path = input("Path to .seq file: ")
+
 print("\nPlease indicate the filename of the Siril sequence.\nSequence needs to be aligned!")
 print("All selected frames will be used, and best ones will be kept.\n")
 seq = input("Filename (including the .seq extension): ")
 S = QuickSelector(path, seq)
 print(f"Images in sequence: {S.image_count}")
+
+img_path = f"{path}/img"
+if not os.path.exists(img_path):
+    os.makedirs(img_path)
 
 from_idx = int(my_input("Starting frame", 0))
 window = int(my_input("Window - consecutive frames to consider for a single final image", 2000))
