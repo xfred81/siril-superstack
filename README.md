@@ -1,6 +1,6 @@
 # siril-superstack
 
-```siril-superstack``` generates a Siril script to render superstacks, as described on Siril's site for comets: https://siril.org/tutorials/comet/#animations-with-superstacking. A superstack refers to a stacking applied only to a part of a sequence; here applied to planetary, the main goal is to generate animations through mutiple TIF files stacked at different moment in time (superstacks), and with a specific subfiltering of frames within each superstack.
+```siril-superstack``` generates a Siril script to render superstacks, as described on Siril's site https://siril.org/tutorials/comet/#animations-with-superstacking. A superstack refers to a stacking applied only to a part of a sequence; applied to planetary, the main goal is to generate animations through mutiple TIF files stacked at different moment in time (superstacks), and with a specific subfiltering of frames within each superstack.
 
 ## Installation
 
@@ -22,5 +22,5 @@ My routine:
 Notice that if script fails and if you want to regenerate it, you'll have to
 select all of your images again.
 
-After image's creation, you can combine them as a animation by ffmpeg tool for example.
+After image's creation, you can combine them as a animation with ffmpeg tool for example.
 
