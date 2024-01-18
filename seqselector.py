@@ -42,7 +42,8 @@ class QuickSelector:
     def image_count(self):
         return self._image_count
     
-    def output_as_script(self, seq_fname: str, idx0: int, oidx: int, number: int, ratio: float):
+    def output_as_script(self, seq_fname: str, idx0: int, oidx: int, number: int, ratio: float, wavelets: list, rmgreen: str,
+                         sat_amount: float, sat_bg: float, asinh_stretch: float, asinh_bp: float):
         result = []
         lines = self._lines.copy()
         
@@ -63,6 +64,9 @@ class QuickSelector:
         
         first_e = None
         last_e = None
+
+        wavelets_len = len(wavelets)
+        wavelets_str = " ".join(wavelets)
             
         for i in range(idx0, idx0+number):
             idx = self._line_idx_for_first_image + i
@@ -92,11 +96,18 @@ class QuickSelector:
         
         result.append(f"stack {seq_fname} sum -filter-included -out=img/seqselector.fit\n")
         result.append("load img/seqselector.fit\n")
-        result.append("wavelet 6 2\n")
-        result.append("wrecons 12.83 14.22 1 1 1 1\n") # 43.5 8.09 1.67 1 1 1\n")
-        result.append("rmgreen\n")
-        result.append("asinh -human 4 0.02997\n")
-        result.append("satu 0.75 0.25\n")
+
+        if wavelets_len>0:
+            result.append(f"wavelet {wavelets_len} 2\n")
+            result.append(f"wrecons {wavelets_str}\n")
+        if rmgreen == 'y':
+            result.append("rmgreen\n")
+
+        if asinh_stretch != 0.0 or asinh_bp != 0.0:
+            result.append(f"asinh -human {asinh_stretch} {asinh_bp}\n")
+
+        if sat_amount != 0.0 or sat_bg != 0.0:
+            result.append(f"satu {sat_amount} {sat_bg}\n")
         result.append(f"savetif img/seqselector{oidx}\n")
 
         

@@ -15,12 +15,13 @@ def my_input(label: str, default: float):
 
     return r
 
-
-def planetary(S: QuickSelector, seq_fname: str, from_idx: int, step: int, window: int, ratio: float):
+def planetary(S: QuickSelector, seq_fname: str, from_idx: int, step: int, window: int, ratio: float, wavelets: list, rmgreen: str,
+              sat_amount: float, sat_bg: float, asinh_stretch: float, asinh_bp: float):
     lines = ['requires 1.2.0\n']
 
     for idx in range(from_idx, S.image_count - window, step):
-        lines += S.output_as_script(seq_fname, idx, int(idx/step), window, ratio)
+        lines += S.output_as_script(seq_fname, idx, int(idx/step), window, ratio, wavelets, rmgreen, sat_amount, sat_bg,
+                                    asinh_stretch, asinh_bp)
 
     with open(f'{os.getenv("HOME")}/.siril/scripts/Superstack-planetary.ssf', 'w') as out_file:
         out_file.writelines(lines)
@@ -42,7 +43,18 @@ window = int(my_input("Window - consecutive frames to consider for a single fina
 ratio = float(my_input("Ratio of frames to be kept in window", 0.15))
 step = int(my_input("Step - number of frames to shift window within SEQ file", int(S.image_count/100)))
 
+wavelets = my_input("Give coefficients for wavelets (leave empty for no wavelet)", '')
+wavelets = wavelets.split(" ")
+
+rmgreen = my_input("Remove green noise", 'y')
+
+sat_amount = float(my_input("Saturation amount - 0.0 to ignore", 0.0))
+sat_bg = float(my_input("Saturation background - 0.0 to ignore", 0.0))
+
+asinh_stretch = float(my_input("asinh stretch - 0.0 to ignore", 0.0))
+asinh_bp = float(my_input("asinh's black point - 0.0 to ignore", 0.0))
+
 print(f"\n{(S.image_count-window)/step} images to be generated through script.")
-planetary(S, seq, from_idx, step, window, ratio)
+planetary(S, seq, from_idx, step, window, ratio, wavelets, rmgreen, sat_amount, sat_bg, asinh_stretch, asinh_bp)
 
 print("\nGo in Siril, and use command 'reloadscripts' to detect and use the Superstack-planetary.ssf on target sequence")
